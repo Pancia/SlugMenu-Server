@@ -1,0 +1,2 @@
+defmodule Slugmenu do
+end
