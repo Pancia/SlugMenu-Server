@@ -22,7 +22,8 @@ defmodule Slugmenu.RegistryTest do
     {:ok, registry: registry}
   end
 
-  test "registry spawns buckets", %{registry: registry} do
+  test "registry spawns buckets",
+  %{registry: registry} do
     assert SR.lookup(registry, "shopping") == :error
 
     SR.create(registry, "shopping")
@@ -32,14 +33,16 @@ defmodule Slugmenu.RegistryTest do
     assert SB.get(bucket, "milk") == 1
   end
 
-  test "registry removes buckets on exit", %{registry: registry} do
+  test "registry removes buckets on exit",
+  %{registry: registry} do
     SR.create(registry, "shopping")
     {:ok, bucket} = SR.lookup(registry, "shopping")
     Agent.stop(bucket)
     assert SR.lookup(registry, "shopping") == :error
   end
 
-  test "registry sends events on create and crash", %{registry: registry} do
+  test "registry sends events on create and crash",
+  %{registry: registry} do
     SR.create(registry, "shopping")
     {:ok, bucket} = SR.lookup(registry, "shopping")
     assert_receive {:create, "shopping", ^bucket}
@@ -48,7 +51,8 @@ defmodule Slugmenu.RegistryTest do
     assert_receive {:exit, "shopping", ^bucket}
   end
 
-  test "registry removes bucket on crash", %{registry: registry} do
+  test "registry removes bucket on crash",
+  %{registry: registry} do
     SR.create(registry, "shopping")
     {:ok, bucket} = SR.lookup(registry, "shopping")
 
