@@ -29,4 +29,16 @@ defmodule Slugmenu.Bucket do
       HashDict.pop(dict, key)
     end)
   end
+
+  @doc """
+  Updates `key` in `bucket` using f.
+  `f` should be a fn from val to val,
+  where val is whatever the val of `bucket` is at `key`.
+  """
+  def update(bucket, key, f) do
+    Agent.update(bucket, fn dict ->
+      new_val = f.(HashDict.get(dict, key))
+      HashDict.put(dict, key, new_val)
+    end)
+  end
 end
