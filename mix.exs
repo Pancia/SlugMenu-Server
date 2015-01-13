@@ -3,9 +3,9 @@ defmodule Slugmenu.Mixfile do
 
   def project do
     [app: :slugmenu,
-     version: "0.0.1",
-     elixir: "~> 1.0",
-     deps: deps]
+      version: "0.0.1",
+      elixir: "~> 1.0",
+      deps: deps]
   end
 
   # Configuration for the OTP application
@@ -13,10 +13,14 @@ defmodule Slugmenu.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [applications: [:logger, :pipe],
-      mod: {Slugmenu, []}]
+      mod: {Slugmenu, []}
+    ]
   end
 
   defp deps do
-    [{:pipe, github: "batate/elixir-pipes"}]
+    [{:pipe, github: "batate/elixir-pipes"},
+      {:urna, github: "meh/urna"},
+      {:httpoison, "~> 0.5"}
+    ]
   end
 end

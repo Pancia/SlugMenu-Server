@@ -41,4 +41,11 @@ defmodule Slugmenu.Bucket do
       HashDict.put(dict, key, new_val)
     end)
   end
+
+  def put_and_get(bucket, key, value) do
+    Agent.update(bucket, fn dict ->
+      HashDict.put(dict, key, value)
+    end)
+    Slugmenu.Bucket.get(bucket, key)
+  end
 end
