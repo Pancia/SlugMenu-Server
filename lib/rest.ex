@@ -50,9 +50,9 @@ defmodule Slugmenu.RestServer do
         rating: rating}
   end
 
-  #iex> HTTPoison.get! "localhost:8080/rating/nine/pizza"
-  #iex> HTTPoison.post!("localhost:8080/rating/nine/pizza", "{\"rating\": 5}", %{"Content-type" => "application/json"}).body
-  namespace :rating do
+  #iex> HTTPoison.get! "localhost:8080/ratings/nine/pizza"
+  #iex> HTTPoison.post!("localhost:8080/ratings/nine/pizza", "{\"rating\": 5}", %{"Content-type" => "application/json"}).body
+  namespace :ratings do
     resource :nine do
       get food do
         api_get_rating(@nine, food)
