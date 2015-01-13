@@ -24,10 +24,11 @@ defmodule Slugmenu.RegistryTest do
 
   test "registry spawns buckets",
   %{registry: registry} do
-    assert SR.lookup(registry, "shopping") == :error
+    reg_name = "shopping"
+    assert SR.lookup(registry, reg_name) == :error
 
     SR.create(registry, "shopping")
-    assert {:ok, bucket} = SR.lookup(registry, "shopping")
+    assert {:ok, bucket} = SR.lookup(registry, reg_name)
 
     SB.put(bucket, "milk", 1)
     assert SB.get(bucket, "milk") == 1
@@ -35,31 +36,33 @@ defmodule Slugmenu.RegistryTest do
 
   test "registry removes buckets on exit",
   %{registry: registry} do
-    SR.create(registry, "shopping")
-    {:ok, bucket} = SR.lookup(registry, "shopping")
+    reg_name = "iremovebucketsonexit"
+    SR.create(registry, reg_name)
+    {:ok, bucket} = SR.lookup(registry, reg_name)
     Agent.stop(bucket)
-    assert SR.lookup(registry, "shopping") == :error
+    assert SR.lookup(registry, reg_name) == :error
   end
 
   test "registry sends events on create and crash",
   %{registry: registry} do
-    SR.create(registry, "shopping")
-    {:ok, bucket} = SR.lookup(registry, "shopping")
-    assert_receive {:create, "shopping", ^bucket}
+    reg_name = "ibroadcastevents"
+    SR.create(registry, reg_name)
+    {:ok, bucket} = SR.lookup(registry, reg_name)
+    assert_receive {:create, reg_name, ^bucket}
 
     Agent.stop(bucket)
-    assert_receive {:exit, "shopping", ^bucket}
+    assert_receive {:exit, reg_name, ^bucket}
   end
 
   test "registry removes bucket on crash",
   %{registry: registry} do
-    SR.create(registry, "shopping")
-    {:ok, bucket} = SR.lookup(registry, "shopping")
+    reg_name = "iremovemeoncrash"
+    SR.create(registry, reg_name)
+    {:ok, bucket} = SR.lookup(registry, reg_name)
 
     # Kill the bucket and wait for the notification
     Process.exit(bucket, :shutdown)
-    assert_receive {:exit, "shopping", ^bucket}
-    assert SR.lookup(registry, "shopping") == :error
+    assert_receive {:exit, reg_name, ^bucket}
+    assert SR.lookup(registry, reg_name) == :error
   end
-
 end
