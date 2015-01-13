@@ -48,10 +48,10 @@ defmodule Slugmenu.RegistryTest do
     reg_name = "ibroadcastevents"
     SR.create(registry, reg_name)
     {:ok, bucket} = SR.lookup(registry, reg_name)
-    assert_receive {:create, reg_name, ^bucket}
+    assert_receive {:create, ^reg_name, ^bucket}
 
     Agent.stop(bucket)
-    assert_receive {:exit, reg_name, ^bucket}
+    assert_receive {:exit, ^reg_name, ^bucket}
   end
 
   test "registry removes bucket on crash",
