@@ -9,7 +9,7 @@ defmodule Slugmenu.RestServer do
   @porter "porter"
   @crown  "crown"
 
-  def start_link do
+  def start_link(opts \\ []) do
     SR.create(SR, @nine)
     SR.create(SR, @eight)
     SR.create(SR, @cowell)
@@ -17,8 +17,8 @@ defmodule Slugmenu.RestServer do
     SR.create(SR, @crown)
 
     HTTPoison.start()
-    IO.puts "Accepting http requests on port 8080"
-    Urna.start(Slugmenu.RestServer, port: 8080)
+    IO.puts "Accepting http requests on port #{opts[:port]}"
+    Urna.start(Slugmenu.RestServer, port: opts[:port])
   end
 
   defp add_to_avg(rating, user, {len, avg, usr_ratings}) do

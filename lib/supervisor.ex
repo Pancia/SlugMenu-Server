@@ -18,8 +18,8 @@ defmodule Slugmenu.Supervisor do
       worker(Slugmenu.Bucket.Supervisor, [[name: @bucket_sup_name]]),
       worker(Slugmenu.Registry, [@manager_name, @bucket_sup_name, [name: @registry_name]]),
       supervisor(Task.Supervisor, [[name: @server_sup_name]]),
-      worker(Task, [@server_name, :accept, [port]]),
-      worker(Slugmenu.RestServer, [])
+      worker(Task, [@server_name, :accept, [4040]]),
+      worker(Slugmenu.RestServer, [[port: port]])
     ]
 
     opts = [strategy: :one_for_one]
