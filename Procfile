@@ -1,1 +1,1 @@
-web: MIX_ENV=elixir --no-halt -S mix run
+web: elixir -S mix run --no-halt -p $PORT
