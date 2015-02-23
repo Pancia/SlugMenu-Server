@@ -3,11 +3,15 @@ defmodule Slugmenu.Mixfile do
 
   def project do
     {opts, _argv, _errors} = OptionParser.parse(System.argv(), strict: [port: :number], aliases: [p: :port])
+    port = case opts[:port] do
+      nil -> "8080"
+      x -> x
+    end
     [app: :slugmenu,
       version: "0.0.1",
       elixir: "~> 1.0",
       deps: deps,
-      port: opts[:port]
+      port: port
     ]
   end
 
