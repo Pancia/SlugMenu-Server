@@ -34,7 +34,7 @@ defmodule Slugmenu.RestServer do
 
   defp get_rating!(bucket, food) do
     case SB.get(bucket, food) do
-      {l, r} -> {l, r}
+      {l, r, u} -> {l, r, u}
       _ -> SB.put_and_get(bucket, food, {0,-1,%{}})
     end
   end
