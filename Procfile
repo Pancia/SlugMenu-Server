@@ -1,1 +1,1 @@
-web: MIX_ENV=prod mix run
+web: MIX_ENV=elixir --no-halt -S mix run
