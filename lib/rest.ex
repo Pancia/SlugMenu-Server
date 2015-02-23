@@ -16,7 +16,7 @@ defmodule Slugmenu.RestServer do
     SR.create(SR, @porter)
     SR.create(SR, @crown)
 
-    :hackney.start
+    HTTPoison.start()
     IO.puts "Accepting http requests on port 8080"
     Urna.start(Slugmenu.RestServer, port: 8080)
   end
