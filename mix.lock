@@ -1,5 +1,6 @@
 %{"cauldron": {:hex, :cauldron, "0.1.5"},
   "exts": {:hex, :exts, "0.2.2"},
+  "floki": {:hex, :floki, "0.1.0"},
   "hackney": {:hex, :hackney, "0.14.3"},
   "httpoison": {:hex, :httpoison, "0.5.0"},
   "httprot": {:hex, :httprot, "0.1.5"},
@@ -8,4 +9,5 @@
   "pipe": {:git, "git://github.com/batate/elixir-pipes.git", "fbbe0997f761b02fe5b6e809b5ee4e3fba9c819d", []},
   "reagent": {:hex, :reagent, "0.1.5"},
   "socket": {:hex, :socket, "0.2.8"},
+  "timex": {:hex, :timex, "0.13.3"},
   "urna": {:git, "git://github.com/meh/urna.git", "aebe519a42c7f3c6a2276f5f95e8b5e7442c2bae", []}}
