@@ -68,49 +68,52 @@ defmodule Slugmenu.RestServer do
     |> List.foldr(%{}, &Dict.merge/2) |> Map.put(:title, title)
   end
 
-  defp get_html_menu(dh, dtdate) do
+  defp get_html_menu(dh_loc_num, dtdate) do
     final_ucsc_dh_url = @base_ucsc_dh_url
-                        <> "&locationNum=#{dh}"
+                        <> "&locationNum=#{dh_loc_num}"
                         <> "&dtdate=#{fmt_dtdate dtdate}"
     HTTPoison.get!(final_ucsc_dh_url).body
   end
 
-  defp get_menu(dh, dtdate) do
-    ets_menu_key = "#{dh}-#{fmt_dtdate dtdate}"
+  defp get_menu(dh_loc_num, dtdate, dh) do
+    t = Time.now
+    ets_menu_key = "#{dh_loc_num}-#{fmt_dtdate dtdate}"
     {found, menu} = case :ets.lookup(:menu_cache, ets_menu_key) do
-      [] -> {false, get_html_menu(dh, dtdate) |> parse_html_menu}
+      [] -> {false, get_html_menu(dh_loc_num, dtdate) |> parse_html_menu}
       [{_key,menu}] -> {true, menu}
     end
+    menu = Dict.put(menu, "dh", Atom.to_string dh)
     if not found do
       :ets.insert(:menu_cache, {ets_menu_key, menu})
     end
+    menu = Dict.put(menu, "elapsed", Time.elapsed(t, :msecs))
     menu
   end
 
   namespace :menu do
     resource :nine do
       get dtdate do
-        get_menu(@dh_to_url[:nine], dtdate)
+        get_menu(@dh_to_url[:nine], dtdate, :nine)
       end
     end
     resource :eight do
       get dtdate do
-        get_menu(@dh_to_url[:eight], dtdate)
+        get_menu(@dh_to_url[:eight], dtdate, :eight)
       end
     end
     resource :cowell do
       get dtdate do
-        get_menu(@dh_to_url[:cowell], dtdate)
+        get_menu(@dh_to_url[:cowell], dtdate, :cowell)
       end
     end
     resource :porter do
       get dtdate do
-        get_menu(@dh_to_url[:porter], dtdate)
+        get_menu(@dh_to_url[:porter], dtdate, :porter)
       end
     end
     resource :crown do
       get dtdate do
-        get_menu(@dh_to_url[:crown], dtdate)
+        get_menu(@dh_to_url[:crown], dtdate, :crown)
       end
     end
   end
@@ -145,6 +148,7 @@ defmodule Slugmenu.RestServer do
     {:ok, bucket} = SR.lookup(SR, dh)
     SB.update(bucket, food, fn old ->
       rating |> add_to_avg(user, old||{0,-1,%{}}) end)
+    #TODO:? SB.put(bucket, "_last_mod_", Time.now(:msecs))
     {_len, rating, _usr_ratings} = SB.get(bucket, food)
     IO.puts "POST dh: #{dh}, food: #{food}, rating: #{rating}"
     %{status: "ok",
