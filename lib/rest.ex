@@ -1,7 +1,7 @@
 defmodule Slugmenu.RestServer do
   alias Slugmenu.Registry, as: SR
   alias Slugmenu.Bucket, as: SB
-  use Urna
+  use Urna, headers: %{"Access-Control-Allow-Origin" => "*"}
   use Timex
 
   @nine   "nine"
@@ -22,7 +22,6 @@ defmodule Slugmenu.RestServer do
     IO.puts "Accepting http requests on port #{opts[:port]}"
     Urna.start(Slugmenu.RestServer, port: opts[:port])
   end
-
 
   # Mapping from dh to locationNum, see: get_html_menu
   @dh_to_url [nine: "30", eight: "30", cowell: "05", porter: "25", crown: "20"]

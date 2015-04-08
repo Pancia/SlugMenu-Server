@@ -25,4 +25,5 @@ defmodule Slugmenu.Supervisor do
     opts = [strategy: :one_for_one]
     supervise(children, opts)
   end
+
 end
